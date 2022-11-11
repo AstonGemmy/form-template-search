@@ -12,7 +12,15 @@ import Pagination from './components/Pagination';
 import ActiveCategoryStat from './components/ActiveCategoryStat';
 
 const App = () => {
-  const { isLoading, activeCategory } = useActiveCategoryTemplates()
+  const {
+    isLoading,
+    activeCategory: {
+      name,
+      templates,
+      templatesPerPage,
+      activePageTemplates
+    }
+  } = useActiveCategoryTemplates()
 
   return (
     <div className="app-container">
@@ -24,18 +32,20 @@ const App = () => {
       <Filters />
       
       <div className="container">        
-        <InfoBar isLoading={ isLoading } />
+        <InfoBar
+          isLoading={ isLoading }
+          hasTemplates={Boolean(activePageTemplates.length)} />
         
         <ActiveCategoryStat
-          categoryName={ activeCategory.name }
-          categoryTemplateCount={ activeCategory.templates.length }
+          categoryName={ name }
+          categoryTemplateCount={ templates.length }
         />
 
-        <Templates isLoading={ isLoading } templates={ activeCategory.activePageTemplates } />
+        <Templates isLoading={ isLoading } templates={ activePageTemplates } />
         
         <Pagination
-          totalItems={ activeCategory.templates.length }
-          itemsPerPage={ activeCategory.templatesPerPage }
+          totalItems={ templates.length }
+          itemsPerPage={ templatesPerPage }
         />
       </div>
     </div>

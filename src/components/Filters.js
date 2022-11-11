@@ -1,10 +1,7 @@
 // Hooks
 import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import useDebouncedSearch from "../hooks/useDebouncedSearch";
 import useFilters from "../hooks/useFilters";
-
-// Redux slice
-import { searchActiveCategoryTemplates } from "../slices/template";
 
 // Components
 import SearchInput from "./SearchInput";
@@ -31,7 +28,7 @@ const filterOptions = {
 }
 
 const Filters = () => {
-  const dispatch = useDispatch()
+  const { debouncedTerm, setDebouncedTerm } = useDebouncedSearch()
   
   const searchInputRef = useRef()
   const categoryFilterRef = useRef()
@@ -55,8 +52,8 @@ const Filters = () => {
       <form className="search-form">
         <SearchInput
           id="search"
-          defaultValue={''}
-          getValue={(value) => dispatch(searchActiveCategoryTemplates({ searchTerm: value }))}
+          defaultValue={debouncedTerm}
+          getValue={(value) => setDebouncedTerm(value)}
           ref={searchInputRef}
           isFilterOpen={isFilterOpen}
         />

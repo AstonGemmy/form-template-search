@@ -11,7 +11,8 @@ const SearchInput = React.forwardRef(({ id, defaultValue, getValue, isFilterOpen
       ref={ref}
       type="text"
       onChange={(e) => getValue(e.target.value)}
-      className={`${(isFilterOpen && 'is-filter-open ')} search-input`} placeholder="Search Templates"
+      className={`${(isFilterOpen && 'is-filter-open ')} search-input`}
+      placeholder="Search Templates"
     />
   )
 })
