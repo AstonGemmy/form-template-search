@@ -1,5 +1,11 @@
+// Core module
+import PropTypes from 'prop-types'
+
+// Hooks
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
+
+// Redux slice
 import { setActiveCategoryPageTemplates } from "../slices/template";
 
 const Pagination = ({ totalItems, itemsPerPage = 12 }) => {
@@ -48,6 +54,11 @@ const Pagination = ({ totalItems, itemsPerPage = 12 }) => {
       )}
     </>
   )
+}
+
+Pagination.propTypes = {
+  totalItems: PropTypes.number,
+  itemsPerPage: PropTypes.number
 }
 
 export default Pagination;

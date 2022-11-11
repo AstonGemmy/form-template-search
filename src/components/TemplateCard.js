@@ -1,3 +1,6 @@
+// Core module
+import PropTypes from 'prop-types'
+
 const TemplateCard = ({ name, description, link }) => {
   
   return (
@@ -15,6 +18,12 @@ const TemplateCard = ({ name, description, link }) => {
       </a>
     </div>
   )
+}
+
+TemplateCard.propTypes = {
+  name: PropTypes.string,
+  description: PropTypes.string,
+  link: PropTypes.string
 }
 
 export default TemplateCard;

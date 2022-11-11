@@ -1,3 +1,6 @@
+// Core modules
+import PropTypes from 'prop-types'
+
 import TemplateCard from "./TemplateCard"
 
 const Templates = ({ isLoading, templates }) => {
@@ -12,6 +15,11 @@ const Templates = ({ isLoading, templates }) => {
       )}
     </div>
   )
+}
+
+TemplateCard.propTypes = {
+  isLoading: PropTypes.bool,
+  templates: PropTypes.array
 }
 
 export default Templates;

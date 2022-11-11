@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 const InfoBar = ({ isLoading, hasTemplates }) => {
   return (
     <div className="info-bar">
@@ -18,6 +20,11 @@ const InfoBar = ({ isLoading, hasTemplates }) => {
       )}
     </div>
   )
+}
+
+InfoBar.propTypes = {
+  isLoading: PropTypes.bool,
+  hasTemplates: PropTypes.bool
 }
 
 export default InfoBar;

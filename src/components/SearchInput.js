@@ -1,4 +1,5 @@
-// Hooks
+// Core modules
+import PropTypes from 'prop-types'
 import React from "react";
 
 const SearchInput = React.forwardRef(({ id, defaultValue, getValue, isFilterOpen }, ref) => {
@@ -16,5 +17,12 @@ const SearchInput = React.forwardRef(({ id, defaultValue, getValue, isFilterOpen
     />
   )
 })
+
+SearchInput.propTypes = {
+  id: PropTypes.string,
+  defaultValue: PropTypes.string,
+  getValue: PropTypes.func,
+  isFilterOpen: PropTypes.bool
+}
 
 export default SearchInput;

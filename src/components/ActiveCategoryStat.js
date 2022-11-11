@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 const ActiveCategoryStat = ({ categoryName = 'All', categoryTemplateCount = 0 }) => {
 
   return (
@@ -10,6 +12,11 @@ const ActiveCategoryStat = ({ categoryName = 'All', categoryTemplateCount = 0 })
       </h3>
     </div>
   )
+}
+
+ActiveCategoryStat.propTypes = {
+  categoryName: PropTypes.string,
+  categoryTemplateCount: PropTypes.number
 }
 
 export default ActiveCategoryStat;
