@@ -22,8 +22,8 @@ const Pagination = ({ totalItems, itemsPerPage = 12 }) => {
       { Boolean(totalItems) && (
         <ul className="pagination">
           <li>
-          <button onClick={decrementPage} className="prev-button" title="Prev Page Button">
-              {activePage > 1 && <img src="/assets/svg/chevron-right.svg" alt="next-page-button" />}
+            <button onClick={decrementPage} className="prev-button" title="Prev Page Button">
+              {activePage > 1 && <img src="./assets/svg/chevron-right.svg" alt="next-page-button" />}
               Prev
             </button>
           </li>
@@ -41,7 +41,7 @@ const Pagination = ({ totalItems, itemsPerPage = 12 }) => {
           <li>
             <button onClick={incrementPage} className="next-button" title="Next Page Button">
               Next
-              {activePage < totalPages && <img src="/assets/svg/chevron-right.svg" alt="next-page-button" />}
+              {activePage < totalPages && <img src="./assets/svg/chevron-right.svg" alt="next-page-button" />}
             </button>
           </li>
         </ul>
