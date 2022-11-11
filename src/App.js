@@ -1,7 +1,7 @@
-// Styles
+// Style
 import './styles/App.css';
 
-// Hooks
+// Hook
 import useActiveCategoryTemplates from './hooks/useActiveCategoryTemplates';
 
 // Components
@@ -10,25 +10,22 @@ import InfoBar from './components/InfoBar';
 import Templates from './components/Templates';
 import Pagination from './components/Pagination';
 import ActiveCategoryStat from './components/ActiveCategoryStat';
-import ResponseFeedbackDisplay from './components/ResponseFeedback';
 
 const App = () => {
   const { isLoading, activeCategory } = useActiveCategoryTemplates()
-  
-  // if (isLoading) return <ResponseFeedbackDisplay target="get-templates" />
 
   return (
     <div className="app-container">
+      
       <div className="container">
         <h2 className="app-header">Form Template Search Interface</h2>
       </div>
       
-      <div className='filter-container'>
-        <Filters />
-      </div>
+      <Filters />
       
-      <div className="container">
-        <InfoBar />
+      <div className="container">        
+        <InfoBar isLoading={ isLoading } />
+        
         <ActiveCategoryStat
           categoryName={ activeCategory.name }
           categoryTemplateCount={ activeCategory.templates.length }

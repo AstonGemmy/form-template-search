@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { errorProcessor } from '../utils/errorProcessor'
-import { prepareFeedback } from './feedback'
 
 import TemplateService from '../services/template'
 
@@ -9,12 +8,10 @@ export const getTemplates = createAsyncThunk(
   async (query, thunkAPI) => {
     try {
       const { data } = await TemplateService.getTemplates()
-      thunkAPI.dispatch(prepareFeedback('Operation successful!', 'success', 'get-templates'))
       return { templates: data }
     } catch (error) {
       const { message } = errorProcessor(error)
-      thunkAPI.dispatch(prepareFeedback(message, 'error', 'get-templates'))
-      return thunkAPI.rejectWithValue();
+      return thunkAPI.rejectWithValue(message);
     }
   }
 )

@@ -51,55 +51,57 @@ const Filters = () => {
   })
   
   return (
-    <form className="search-form">
-      <SearchInput
-        id="search"
-        defaultValue={''}
-        getValue={(value) => dispatch(searchActiveCategoryTemplates({ searchTerm: value }))}
-        ref={searchInputRef}
-        isFilterOpen={isFilterOpen}
-      />
-      
-      <button
-        onClick={() => toggleFilter(!isFilterOpen)}
-        type="button" className="toggle-filter-button"
-      >
-        Sort
-      </button>
+    <div className='filter-container'>
+      <form className="search-form">
+        <SearchInput
+          id="search"
+          defaultValue={''}
+          getValue={(value) => dispatch(searchActiveCategoryTemplates({ searchTerm: value }))}
+          ref={searchInputRef}
+          isFilterOpen={isFilterOpen}
+        />
+        
+        <button
+          onClick={() => toggleFilter(!isFilterOpen)}
+          type="button" className="toggle-filter-button"
+        >
+          Sort
+        </button>
 
-      <div className={`${(isFilterOpen && 'show ')} filters`}>
-        <h6 className="sort">Sort By:</h6>
+        <div className={`${(isFilterOpen && 'show ')} filters`}>
+          <h6 className="sort">Sort By:</h6>
 
-        <div className="filter-area">
-          <SelectInput
-            id="category-filter"
-            label="Category"
-            defaultValue={'all'}
-            ref={categoryFilterRef}
-            options={filterOptions.category}
-            getSelection={(value) => handleCategoryFilter(value)}
-          />
+          <div className="filter-area">
+            <SelectInput
+              id="category-filter"
+              label="Category"
+              defaultValue={'all'}
+              ref={categoryFilterRef}
+              options={filterOptions.category}
+              getSelection={(value) => handleCategoryFilter(value)}
+            />
 
-          <SelectInput
-            id="sort-name"
-            label="Order"
-            defaultValue={'default'}
-            ref={orderFilterRef}
-            options={filterOptions.order}
-            getSelection={(value) => handleOrderFilter(value)}
-          />
+            <SelectInput
+              id="sort-name"
+              label="Order"
+              defaultValue={'default'}
+              ref={orderFilterRef}
+              options={filterOptions.order}
+              getSelection={(value) => handleOrderFilter(value)}
+            />
 
-          <SelectInput
-            id="sort-date"
-            label="Date"
-            defaultValue={'default'}
-            ref={dateFilterRef}
-            options={filterOptions.date}
-            getSelection={(value) => handleDateFilter(value)}
-          />
+            <SelectInput
+              id="sort-date"
+              label="Date"
+              defaultValue={'default'}
+              ref={dateFilterRef}
+              options={filterOptions.date}
+              getSelection={(value) => handleDateFilter(value)}
+            />
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   )
 }
 
