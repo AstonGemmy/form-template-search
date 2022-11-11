@@ -1,0 +1,19 @@
+// Hooks
+import React from "react";
+
+const SearchInput = React.forwardRef(({ id, defaultValue, getValue, isFilterOpen }, ref) => {
+
+  return (
+    <input
+      data-testid={id}
+      defaultValue={defaultValue}
+      id={id}
+      ref={ref}
+      type="text"
+      onChange={(e) => getValue(e.target.value)}
+      className={`${(isFilterOpen && 'is-filter-open ')} search-input`} placeholder="Search Templates"
+    />
+  )
+})
+
+export default SearchInput;
