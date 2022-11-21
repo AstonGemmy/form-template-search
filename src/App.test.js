@@ -1,58 +1,131 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, act } from '@testing-library/react';
+import { mockAPIResponse, getTemplatesResponse } from './tests/mock-axios';
 import { Provider } from 'react-redux';
 import store from './store'
+import { getTemplates } from './slices/template';
+
 import Filters from './components/Filters';
 import App from './App';
 
 const categories = ['All', 'Health', 'Education', 'E-commerce']
 
-test('active category is displayed as header of template card', async () => {
-  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+describe("Fetch template list from API", () => {
+  beforeAll(() => {
+    mockAPIResponse();
+  });
 
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
+  it("Should successfully return a list of form templates", async () => {
+    const apiResponse = await store.dispatch(getTemplates());
+    const templates = apiResponse.payload.templates;
 
-  const categoryFilter = screen.getByTestId('category-filter')
-  const templateCardHeader = screen.getByTestId('template-card-header')
+    expect(apiResponse.type).toBe("get/templates/fulfilled");
+    expect(templates).toEqual(getTemplatesResponse);
 
-  fireEvent.change(categoryFilter, {
-    target: {
-      value: randomCategory
-    }
+    const state = store.getState().template;
+    expect(state.templates).toEqual(templates);
   })
+
+  it("Should set active category templates to equal returned templates", async () => {
+    const apiResponse = await store.dispatch(getTemplates());
+    const templates = apiResponse.payload.templates;
+
+    expect(apiResponse.type).toBe("get/templates/fulfilled");
+
+    const state = store.getState().template;
+    expect(state.activeCategory.templates).toEqual(templates);
+  })
+
+  it("Should set active page templates to only 12 templates", async () => {
+    const apiResponse = await store.dispatch(getTemplates());
+    const templates = apiResponse.payload.templates;
+
+    expect(apiResponse.type).toBe("get/templates/fulfilled");
+
+    const state = store.getState().template;
+    expect(state.activeCategory.activePageTemplates.length).toEqual(12);
+  })
+})
+
+describe("Update UI when active category changes", () => {
+  it('Should display active category name on template card header', async () => {
+    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
   
-  await waitFor(() => {
-    const expectedResult = `${randomCategory} Templates`
-    expect(templateCardHeader).toHaveTextContent(expectedResult);
-  })
-});
-
-test('all other filters and search are cleared when category changes', async () => {
-  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-
-  render(
-    <Provider store={store}>
-      <Filters />
-    </Provider>
-  );
-
-  const categoryFilter = screen.getByTestId('category-filter')
-  const sortName = screen.getByTestId('sort-name')
-  const sortDate = screen.getByTestId('sort-date')
-  const search = screen.getByTestId('search')
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
   
-  fireEvent.change(categoryFilter, {
-    target: {
-      value: randomCategory
-    }
+    const categoryFilter = screen.getByTestId('category-filter')
+    const templateCardHeader = screen.getByTestId('template-card-header')
+  
+    act(() => {
+      fireEvent.change(categoryFilter, {
+        target: {
+          value: randomCategory
+        }
+      })
+    })
+    
+    await waitFor(() => {
+      const expectedResult = `${randomCategory} Templates`
+      expect(templateCardHeader).toHaveTextContent(expectedResult);
+    })
   })
 
-  await waitFor(() => {
-    expect(sortName.value).toBe('default');
-    expect(sortDate.value).toBe('default');
-    expect(search.value).toBe('');
+  it('Should set active category templates to only those that match active category value', async () => {
+    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+  
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+  
+    const categoryFilter = screen.getByTestId('category-filter')
+    const templateCardHeader = screen.getByTestId('template-card-header')
+  
+    act(() => {
+      fireEvent.change(categoryFilter, {
+        target: {
+          value: randomCategory
+        }
+      })
+    })
+    
+    await waitFor(() => {
+      const state = store.getState().template
+      const activeCategoryTemplates = state.templates.filter(template => {
+        return template.category.includes(randomCategory)
+      })
+      expect(state.activeCategory.templates).toEqual(activeCategoryTemplates);
+    })
   })
-});
+
+  it('Should reset all other filters and search input fields', async () => {
+    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+
+    render(
+      <Provider store={store}>
+        <Filters />
+      </Provider>
+    );
+
+    const categoryFilter = screen.getByTestId('category-filter')
+    const sortName = screen.getByTestId('sort-name')
+    const sortDate = screen.getByTestId('sort-date')
+    const search = screen.getByTestId('search')
+    
+    fireEvent.change(categoryFilter, {
+      target: {
+        value: randomCategory
+      }
+    })
+
+    await waitFor(() => {
+      expect(sortName.value).toBe('default');
+      expect(sortDate.value).toBe('default');
+      expect(search.value).toBe('');
+    })
+  });
+})
