@@ -1,10 +1,9 @@
-import { fireEvent, render, screen, waitFor, act } from '@testing-library/react';
+import { fireEvent, screen, waitFor, act } from '@testing-library/react';
 import { mockAPIResponse, getTemplatesResponse } from './tests/mock-axios';
-import { Provider } from 'react-redux';
+import { renderWithProviders } from './tests/redux-wrapper';
 import store from './store'
 import { getTemplates } from './slices/template';
 
-import Filters from './components/Filters';
 import App from './App';
 
 const categories = ['All', 'Health', 'Education', 'E-commerce']
@@ -37,7 +36,6 @@ describe("Fetch template list from API", () => {
 
   it("Should set active page templates to only 12 templates", async () => {
     const apiResponse = await store.dispatch(getTemplates());
-    const templates = apiResponse.payload.templates;
 
     expect(apiResponse.type).toBe("get/templates/fulfilled");
 
@@ -49,13 +47,9 @@ describe("Fetch template list from API", () => {
 describe("Update UI when active category changes", () => {
   it('Should display active category name on template card header', async () => {
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-  
-    render(
-      <Provider store={store}>
-        <App />
-      </Provider>
-    );
-  
+
+    renderWithProviders(<App />)
+    
     const categoryFilter = screen.getByTestId('category-filter')
     const templateCardHeader = screen.getByTestId('template-card-header')
   
@@ -76,15 +70,10 @@ describe("Update UI when active category changes", () => {
   it('Should set active category templates to only those that match active category value', async () => {
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
   
-    render(
-      <Provider store={store}>
-        <App />
-      </Provider>
-    );
-  
+    renderWithProviders(<App />)
+
     const categoryFilter = screen.getByTestId('category-filter')
-    const templateCardHeader = screen.getByTestId('template-card-header')
-  
+    
     act(() => {
       fireEvent.change(categoryFilter, {
         target: {
@@ -105,11 +94,7 @@ describe("Update UI when active category changes", () => {
   it('Should reset all other filters and search input fields', async () => {
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
 
-    render(
-      <Provider store={store}>
-        <Filters />
-      </Provider>
-    );
+    renderWithProviders(<App />)
 
     const categoryFilter = screen.getByTestId('category-filter')
     const sortName = screen.getByTestId('sort-name')
